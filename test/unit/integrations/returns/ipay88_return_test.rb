@@ -32,7 +32,7 @@ class Ipay88ReturnTest < Test::Unit::TestCase
 
   def test_successful_return
     params = parameterize(payload)
-    Ipay88::Return.any_instance.expects(:ssl_post).with(Ipay88.service_url, params,
+    Ipay88::Return.any_instance.expects(:ssl_post).with(Ipay88.entry_url, params,
       { "Content-Length" => params.size.to_s, "User-Agent" => "Active Merchant -- http://activemerchant.org" }
     ).returns("00")
 
@@ -46,7 +46,7 @@ class Ipay88ReturnTest < Test::Unit::TestCase
 
   def test_unsuccessful_return_due_to_requery
     params = parameterize(payload)
-    Ipay88::Return.any_instance.expects(:ssl_post).with(Ipay88.service_url, params,
+    Ipay88::Return.any_instance.expects(:ssl_post).with(Ipay88.entry_url, params,
       { "Content-Length" => params.size.to_s, "User-Agent" => "Active Merchant -- http://activemerchant.org" }
     ).returns("Invalid parameters")
     assert !@ipay88.success?
@@ -54,7 +54,7 @@ class Ipay88ReturnTest < Test::Unit::TestCase
 
   def test_unsuccessful_return_due_to_payment_failed
     params = parameterize(payload)
-    Ipay88::Return.any_instance.expects(:ssl_post).with(Ipay88.service_url, params,
+    Ipay88::Return.any_instance.expects(:ssl_post).with(Ipay88.entry_url, params,
       { "Content-Length" => params.size.to_s, "User-Agent" => "Active Merchant -- http://activemerchant.org" }
     ).returns("00")
     ipay = Ipay88::Return.new(http_raw_data(:payment_failed))
